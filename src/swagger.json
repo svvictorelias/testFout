@@ -1,0 +1,336 @@
+{
+  "openapi":"3.0.0",
+  "info":{
+    "title":"Four Test Documentation",
+    "description":"This is an API to manager the POST's API",
+    "version":"1.0.0",
+    "contact":{
+      "email":"svvictorelias@gmail.com"
+      }
+    },
+    "components": {
+      "securitySchemes": {
+        "jwt": {
+          "type": "http",
+          "scheme": "bearer",
+          "in": "header",
+          "bearerFormat": "JWT"
+        }
+      }
+    }
+  ,
+    "security": [{
+      "jwt": []
+    }],
+    "paths":{
+      "/api/posts":{
+        "get":{
+          "tags":["Posts"],
+          "summary":"List all Posts",
+          "description":"List Posts with all informations",
+          "parameters": [
+            {
+              "name": "page",
+              "in": "query",
+              "description": "Page to see",
+              "schema": {
+                "type": "number"
+              }
+            },
+            {
+              "name": "limit",
+              "in": "query",
+              "description": "Limit of results per page",
+              "schema": {
+                "type": "number"
+              }
+            }
+          ],
+          "responses":{
+            "200":{
+              "description":"Sucess",
+              "content":{
+                "application/json":{
+                  "schema":{
+                    "type":"array",
+                    "items":{
+                      "type":"object",
+                      "properties":{
+                        "_id":{
+                          "type":"string"
+                        },
+                        "title":{
+                          "type":"string"
+                        },
+                        "body":{
+                          "type":"string"
+                        },
+                        
+                        "tags":{
+                          "type":"array",
+                          "items":{
+                            "type":"string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "post":{
+          "tags":["Posts"],
+          "summary":"Create a new post",
+          "description":"Create a new post with three different body param's<br>1 - <strong>title</strong><br>2 - <strong>body</strong><br>3 - <strong>tags</strong>",
+          "requestBody":{
+            "content":{
+              "application/json":{
+                "schema":{
+                  "type":"object",
+                  "properties":{
+                    "title":{
+                      "type":"string"
+                    },
+                    "body":{
+                      "type":"string"
+                    },
+                    "tags":{
+                      "type":"array"
+                    }
+                  }
+                },
+                  "example":{
+                    "title":"My title",
+	                 "body":"This is a body of a space better",
+	                 "tags":["fitness","tech","backend"]
+                  }
+              }
+            }
+          },
+          "responses":{
+            "201":{
+              "description":"Created"
+            },
+            "500":{
+              "description":"Category already exists"
+            },
+            "401":{
+              "description":"Token invalid | Token missing"
+            }
+          }
+        }
+      },
+      "/api/posts/{id}":{
+        "get":{
+          "tags":["Posts"],
+          "summary":"Update a post",
+          "description":"Show one Post by id",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "description": "Post id",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses":{
+            "200":{
+              "description":"Sucess"
+            },
+            "500":{
+              "description":"Internal server error"
+            },
+            "400":{
+              "description":"Post not found"
+            },
+            "401":{
+              "description":"Token invalid | Token missing"
+            }
+          }
+        },
+        "put":{
+          "tags":["Posts"],
+          "summary":"Update a post",
+          "description":"Update a post with three different body param's<br>1 - <strong>title</strong><br>2 - <strong>body</strong><br>3 - <strong>tags</strong>",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "description": "Post id",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody":{
+            "content":{
+              "application/json":{
+                "schema":{
+                  "type":"object",
+                  "properties":{
+                    "name":{
+                      "type":"string"
+                    },
+                    "description":{
+                      "type":"string"
+                    }
+                  }
+                },
+                  "example":{
+                    "title":"My title",
+	                 "body":"This is a new body post",
+	                 "tags":["fitness","tech","backend","frontend"]
+                  }
+              }
+            }
+          },
+          "responses":{
+            "201":{
+              "description":"Created"
+            },
+            "500":{
+              "description":"Category already exists"
+            },
+            "400":{
+              "description":"Need to be at least one param | Tags need to be a array"
+            },
+            "401":{
+              "description":"Token invalid | Token missing"
+            },
+            "404":{
+              "description":"Post not found"
+            }
+          }
+        },
+        "delete":{
+          "tags":["Posts"],
+          "summary":"Delete a post",
+          "description":" If exists, delete a post",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "description": "post id",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "204": {
+              "description": "Accepted"
+            },
+            "400":{
+              "description":"post not avaliable | Token invalid | Token missing"
+            },
+            "404":{
+              "description":"post not found"
+            }
+          }
+        }
+      },
+      "/api/users/signup":{
+        "post":{
+          "tags":["Users"],
+          "summary":"Create a user",
+          "description":"Create a new user in database",
+          "requestBody":{
+            "content":{
+              "application/json":{
+                "schema":{
+                  "type":"object",
+                  "properties":{
+                    "username":{
+                      "type":"string"
+                    },
+                    "password":{
+                      "type":"string"
+                    }
+                  }
+                },
+                  "example":{
+                    "username":"victore",
+	                 "password":"123456789"
+                  }
+              }
+            }
+          },
+          "responses":{
+            "201":{
+              "description":"Created"
+            },
+            "500":{
+              "description":"Internal server error"
+            },
+            "400":{
+              "description":"Error registering post | Password length need to be at least 8"
+            }
+          }
+        }
+      },
+      "/api/users/signin":{
+        "post":{
+          "tags":["Users"],
+          "summary":"Login with a user",
+          "description":"Login with a user in database",
+          "requestBody":{
+            "content":{
+              "application/json":{
+                "schema":{
+                  "type":"object",
+                  "properties":{
+                    "username":{
+                      "type":"string"
+                    },
+                    "password":{
+                      "type":"string"
+                    }
+                  }
+                },
+                  "example":{
+                    "username":"victore",
+	                 "password":"123456789"
+                  }
+              }
+            }
+          },
+          "responses":{
+            "200":{
+              "description":"OK"
+            },
+            "500":{
+              "description":"Internal server error"
+            },
+            "400":{
+              "description":"Unknown error"
+            },
+            "401":{
+              "description":"Login or password do invalid"
+            }
+          }
+        }
+      },
+      "/api/users":{
+        "get":{
+          "tags":["Users"],
+          "summary":"Show users",
+          "description":"For better evaluation, this route of list users was created",
+          "responses": {
+            "200": {
+              "description": "ok"
+            },
+            "500":{
+              "description":"Internal server error"
+            }
+          }
+        }
+      }
+    }
+}
